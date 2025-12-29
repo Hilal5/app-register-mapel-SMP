@@ -82,7 +82,7 @@
                                     </div>
                                 </div>
                                 <div class="ml-4 flex-1">
-                                    <h4 class="font-semibold text-gray-800">{{ $schedule->class->name }}</h4>
+                                    <h4 class="font-semibold text-gray-800">{{ $schedule->schoolClass->name }}</h4>
                                     <p class="text-sm text-gray-600">
                                         {{ $schedule->time_range }} • {{ $schedule->room }}
                                     </p>

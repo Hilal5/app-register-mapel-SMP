@@ -53,7 +53,8 @@ class SubjectController extends Controller
      */
     public function show($id)
     {
-        $subject = Subject::with(['teacher', 'schedules.class', 'schedules.teacher'])
+        // ✅ FIXED: 'schedules.class' → 'schedules.schoolClass'
+        $subject = Subject::with(['teacher', 'schedules.schoolClass', 'schedules.teacher'])
                           ->findOrFail($id);
 
         // Manually add registered_count
