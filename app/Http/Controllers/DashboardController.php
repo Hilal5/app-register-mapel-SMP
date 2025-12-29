@@ -22,8 +22,9 @@ class DashboardController extends Controller
             'totalClasses' => SchoolClass::active()->count(),
             'totalStudents' => User::student()->count(),
             'activeRegistrations' => Registration::where('status', 'approved')->count(),
+            // ✅ FIXED: 'class' → 'schoolClass'
             'todaySchedules' => Schedule::where('day', $this->getTodayInIndonesian())
-                                ->with(['subject', 'teacher', 'class'])
+                                ->with(['subject', 'teacher', 'schoolClass'])
                                 ->limit(3)
                                 ->get(),
         ];

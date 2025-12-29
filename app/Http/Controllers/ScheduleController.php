@@ -13,7 +13,8 @@ class ScheduleController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Schedule::with(['subject', 'class', 'teacher']);
+        // ✅ FIXED: 'class' → 'schoolClass'
+        $query = Schedule::with(['subject', 'schoolClass', 'teacher']);
 
         // Filter by class
         if ($request->filled('class')) {
@@ -71,7 +72,8 @@ class ScheduleController extends Controller
      */
     public function byDay($day)
     {
-        $schedules = Schedule::with(['subject', 'class', 'teacher'])
+        // ✅ FIXED: 'class' → 'schoolClass'
+        $schedules = Schedule::with(['subject', 'schoolClass', 'teacher'])
                             ->where('day', $day)
                             ->where('semester', 'ganjil')
                             ->where('academic_year', 2025)
