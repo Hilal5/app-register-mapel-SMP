@@ -17,13 +17,17 @@ class RegistrationController extends Controller
     public function index()
     {
         $subjects = Subject::with(['teacher', 'schedules.class'])
-                          ->withCount(['registrations as registered_count' => function($q) {
-                              $q->where('status', 'approved');
-                          }])
                           ->where('status', 'active')
                           ->where('semester', 'ganjil')
                           ->orderBy('name')
                           ->paginate(9);
+
+        // Add registered_count manually
+        foreach ($subjects as $subject) {
+            $subject->registered_count = $subject->registrations()
+                ->where('status', 'approved')
+                ->count();
+        }
 
         return view('registrations.index', compact('subjects'));
     }
@@ -39,16 +43,16 @@ class RegistrationController extends Controller
             'schedule_id' => 'required|exists:schedules,id',
         ]);
 
-        // Check if user is authenticated (for now, we'll use dummy user_id)
-        // TODO: Replace with Auth::id() when auth is implemented
-        $userId = 2; // Dummy user ID (Ahmad Rizki from seeder)
+        $userId = Auth::id();
 
         // Check if subject quota is full
-        $subject = Subject::withCount(['registrations as registered_count' => function($q) {
-                        $q->where('status', 'approved');
-                    }])->findOrFail($validated['subject_id']);
+        $subject = Subject::findOrFail($validated['subject_id']);
+        
+        $registeredCount = $subject->registrations()
+            ->where('status', 'approved')
+            ->count();
 
-        if ($subject->registered_count >= $subject->quota) {
+        if ($registeredCount >= $subject->quota) {
             return redirect()
                 ->back()
                 ->with('error', 'Kuota mata pelajaran sudah penuh!');
@@ -117,8 +121,7 @@ class RegistrationController extends Controller
      */
     public function myRegistrations()
     {
-        // TODO: Replace with Auth::id() when auth is implemented
-        $userId = 2; // Dummy user ID
+        $userId = Auth::id();
 
         $registrations = Registration::with(['subject', 'schedule.teacher', 'schedule.class'])
                                     ->where('user_id', $userId)
@@ -133,8 +136,7 @@ class RegistrationController extends Controller
      */
     public function cancel($id)
     {
-        // TODO: Add auth check
-        $userId = 2; // Dummy user ID
+        $userId = Auth::id();
 
         $registration = Registration::where('id', $id)
                                    ->where('user_id', $userId)

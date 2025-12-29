@@ -55,6 +55,11 @@
                         <a href="{{ url('/kelas') }}" class="px-4 py-2 text-white hover:bg-blue-700 rounded-lg transition duration-150 {{ request()->is('kelas*') ? 'bg-blue-700' : '' }}">
                             Kelas
                         </a>
+                        @if(Auth::check() && Auth::user()->isAdmin())
+                            <a href="{{ url('/admin/dashboard') }}" class="px-4 py-2 text-white bg-yellow-500 hover:bg-yellow-600 rounded-lg transition duration-150 {{ request()->is('admin*') ? 'bg-yellow-600' : '' }}">
+                                Admin Panel
+                            </a>
+                        @endif
                     </div>
 
                     <!-- User Menu -->
