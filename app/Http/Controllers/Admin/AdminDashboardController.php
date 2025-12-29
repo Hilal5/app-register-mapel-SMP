@@ -33,10 +33,36 @@ class AdminDashboardController extends Controller
 
         // Recent students
         $recentStudents = User::student()
+                             ->with('class')
                              ->latest()
                              ->limit(5)
                              ->get();
 
-        return view('admin.dashboard', compact('stats', 'recentRegistrations', 'recentStudents'));
+        // Recent schedules
+        $recentSchedules = Schedule::with(['subject', 'teacher', 'schoolClass'])
+                                   ->latest()
+                                   ->limit(5)
+                                   ->get();
+
+        // Recent subjects
+        $recentSubjects = Subject::active()
+                                ->latest()
+                                ->limit(5)
+                                ->get();
+
+        // Recent teachers
+        $recentTeachers = Teacher::active()
+                                ->latest()
+                                ->limit(5)
+                                ->get();
+
+        return view('admin.dashboard', compact(
+            'stats',
+            'recentRegistrations',
+            'recentStudents',
+            'recentSchedules',
+            'recentSubjects',
+            'recentTeachers'
+        ));
     }
 }

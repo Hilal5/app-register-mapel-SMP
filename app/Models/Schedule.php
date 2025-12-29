@@ -38,7 +38,7 @@ class Schedule extends Model
     /**
      * Kelas
      */
-    public function class()
+    public function schoolClass()
     {
         return $this->belongsTo(SchoolClass::class, 'class_id');
     }

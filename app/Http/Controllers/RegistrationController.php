@@ -16,7 +16,7 @@ class RegistrationController extends Controller
      */
     public function index()
     {
-        $subjects = Subject::with(['teacher', 'schedules.class'])
+        $subjects = Subject::with(['teacher', 'schedules.schoolClass'])
                           ->where('status', 'active')
                           ->where('semester', 'ganjil')
                           ->orderBy('name')
@@ -123,7 +123,7 @@ class RegistrationController extends Controller
     {
         $userId = Auth::id();
 
-        $registrations = Registration::with(['subject', 'schedule.teacher', 'schedule.class'])
+        $registrations = Registration::with(['subject', 'schedule.teacher', 'schedule.schoolClass'])
                                     ->where('user_id', $userId)
                                     ->orderBy('created_at', 'desc')
                                     ->get();

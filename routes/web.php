@@ -109,6 +109,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/{id}/edit', [AdminScheduleController::class, 'edit'])->name('edit');
         Route::put('/{id}', [AdminScheduleController::class, 'update'])->name('update');
         Route::delete('/{id}', [AdminScheduleController::class, 'destroy'])->name('destroy');
+        
+        // API Routes untuk auto-fill
+        Route::get('/api/class/{id}', [AdminScheduleController::class, 'getClassData'])->name('api.class');
+        Route::get('/api/subject/{id}', [AdminScheduleController::class, 'getSubjectData'])->name('api.subject');
     });
 
     // Admin Registrations Management

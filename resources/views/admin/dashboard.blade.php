@@ -65,28 +65,28 @@
     <!-- Quick Actions -->
     <x-card title="Quick Actions" class="mb-8">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <x-button href="{{ url('/admin/subjects/create') }}" variant="primary" class="w-full">
+            <x-button href="{{ route('admin.subjects.create') }}" variant="primary" class="w-full">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
                 Tambah Mapel
             </x-button>
 
-            <x-button href="{{ url('/admin/teachers/create') }}" variant="success" class="w-full">
+            <x-button href="{{ route('admin.teachers.create') }}" variant="success" class="w-full">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
                 Tambah Guru
             </x-button>
 
-            <x-button href="{{ url('/admin/schedules/create') }}" variant="outline" class="w-full">
+            <x-button href="{{ route('admin.schedules.create') }}" variant="outline" class="w-full">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
                 Tambah Jadwal
             </x-button>
 
-            <x-button href="{{ url('/admin/registrations') }}" variant="warning" class="w-full">
+            <x-button href="{{ route('admin.registrations.index') }}" variant="warning" class="w-full">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -95,8 +95,8 @@
         </div>
     </x-card>
 
-    <!-- Content Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Content Grid - 2 Columns Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         
         <!-- Recent Registrations -->
         <x-card title="Registrasi Terbaru" subtitle="5 registrasi terakhir">
@@ -122,7 +122,7 @@
                     @endforeach
                 </div>
                 <div class="mt-4">
-                    <x-button href="{{ url('/admin/registrations') }}" variant="outline" size="sm" class="w-full">
+                    <x-button href="{{ route('admin.registrations.index') }}" variant="outline" size="sm" class="w-full">
                         Lihat Semua
                     </x-button>
                 </div>
@@ -158,12 +158,108 @@
                     @endforeach
                 </div>
                 <div class="mt-4">
-                    <x-button href="{{ url('/admin/students') }}" variant="outline" size="sm" class="w-full">
+                    <x-button href="{{ route('admin.students.index') }}" variant="outline" size="sm" class="w-full">
                         Lihat Semua
                     </x-button>
                 </div>
             @else
                 <p class="text-gray-500 text-center py-4">Belum ada siswa</p>
+            @endif
+        </x-card>
+
+    </div>
+
+    <!-- New 3 Columns Layout for Schedules, Subjects, Teachers -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Recent Schedules -->
+        <x-card title="Jadwal Terbaru" subtitle="5 jadwal terakhir">
+            @if($recentSchedules->count() > 0)
+                <div class="space-y-3">
+                    @foreach($recentSchedules as $schedule)
+                        <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                            <div class="flex items-start justify-between mb-2">
+                                <h4 class="font-semibold text-gray-800 text-sm">{{ $schedule->subject->name }}</h4>
+                                <span class="px-2 py-1 bg-indigo-100 text-indigo-700 rounded text-xs">
+                                    {{ $schedule->day }}
+                                </span>
+                            </div>
+                            <p class="text-xs text-gray-600">Guru: {{ $schedule->teacher->name }}</p>
+                            <p class="text-xs text-gray-600">Kelas: {{ $schedule->schoolClass->name }}</p>
+                            <p class="text-xs text-gray-500">{{ $schedule->start_time }} - {{ $schedule->end_time }}</p>
+                        </div>
+                    @endforeach
+                </div>
+                <div class="mt-4">
+                    <x-button href="{{ route('admin.schedules.index') }}" variant="outline" size="sm" class="w-full">
+                        Lihat Semua
+                    </x-button>
+                </div>
+            @else
+                <p class="text-gray-500 text-center py-4">Belum ada jadwal</p>
+            @endif
+        </x-card>
+
+        <!-- Recent Subjects -->
+        <x-card title="Mata Pelajaran" subtitle="5 mata pelajaran terakhir">
+            @if($recentSubjects->count() > 0)
+                <div class="space-y-3">
+                    @foreach($recentSubjects as $subject)
+                        <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <h4 class="font-semibold text-gray-800 text-sm">{{ $subject->name }}</h4>
+                                    <p class="text-xs text-gray-600 mt-1">{{ $subject->code }}</p>
+                                    @if($subject->description)
+                                        <p class="text-xs text-gray-500 mt-1 line-clamp-2">{{ Str::limit($subject->description, 60) }}</p>
+                                    @endif
+                                </div>
+                                <span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs ml-2">
+                                    {{ $subject->credits }} SKS
+                                </span>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+                <div class="mt-4">
+                    <x-button href="{{ route('admin.subjects.index') }}" variant="outline" size="sm" class="w-full">
+                        Lihat Semua
+                    </x-button>
+                </div>
+            @else
+                <p class="text-gray-500 text-center py-4">Belum ada mata pelajaran</p>
+            @endif
+        </x-card>
+
+        <!-- Recent Teachers -->
+        <x-card title="Guru Terbaru" subtitle="5 guru terakhir">
+            @if($recentTeachers->count() > 0)
+                <div class="space-y-3">
+                    @foreach($recentTeachers as $teacher)
+                        <div class="flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200">
+                            <div class="w-10 h-10 bg-green-500 text-white rounded-full flex items-center justify-center font-bold">
+                                {{ substr($teacher->name, 0, 1) }}
+                            </div>
+                            <div class="ml-3 flex-1">
+                                <h4 class="font-semibold text-gray-800 text-sm">{{ $teacher->name }}</h4>
+                                <p class="text-xs text-gray-600">{{ $teacher->email }}</p>
+                                @if($teacher->phone)
+                                    <p class="text-xs text-gray-500">{{ $teacher->phone }}</p>
+                                @endif
+                            </div>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">
+                                {{ $teacher->status }}
+                            </span>
+                        </div>
+                    @endforeach
+                </div>
+                <div class="mt-4">
+                    <x-button href="{{ route('admin.teachers.index') }}" variant="outline" size="sm" class="w-full">
+                        Lihat Semua
+                    </x-button>
+                </div>
+            @else
+                <p class="text-gray-500 text-center py-4">Belum ada guru</p>
             @endif
         </x-card>
 
