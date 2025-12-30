@@ -7,6 +7,11 @@
 
     <title>{{ config('app.name', 'SIAKAD SMP') }} - @yield('title')</title>
 
+    <!-- FAVICON/LOGO di browser tab -->
+    <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
+    <!-- Untuk Apple devices -->
+    <link rel="apple-touch-icon" href="{{ asset('img/logo.png') }}">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet" />
