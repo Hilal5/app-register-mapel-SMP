@@ -149,7 +149,7 @@
                                 </td>
                                 <td class="p-4">
                                     <span class="px-2 py-1 bg-purple-100 text-purple-700 rounded text-xs">
-                                        {{ $reg->schedule->class->name }}
+                                        {{ $reg->schedule->schoolClass->name ?? 'Tidak ada kelas' }}
                                     </span>
                                 </td>
                                 <td class="p-4 text-sm text-gray-600">

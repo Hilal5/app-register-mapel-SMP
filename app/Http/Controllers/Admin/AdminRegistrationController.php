@@ -10,7 +10,7 @@ class AdminRegistrationController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Registration::with(['user', 'subject', 'schedule.teacher', 'schedule.class']);
+        $query = Registration::with(['user', 'subject', 'schedule.teacher', 'schedule.schoolClass']);
 
         // Filter by status
         if ($request->filled('status')) {
